@@ -22,6 +22,10 @@
 
                     <div id="builder"></div>
 
+                    <form id="submit" action="/search.php" method="POST">
+                        <input type="hidden" name="q" value="" />
+                    </form>
+
                     <div class="btn-group pull-left">
                         <button class="btn btn-default reset">Reset</button>
                     </div>
@@ -29,14 +33,7 @@
                     <div class="btn-group pull-right">
                         <button class="btn btn-primary search">Search</button>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-lg-10 col-lg-offset-1">
-                    <div id="result" class="hide">
-                        <h3>Results</h3>
-                        <pre></pre>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -147,16 +144,8 @@
 
                 $('.search').on('click', function () {
                     var jsonQuery = JSON.stringify($('#builder').queryBuilder('getRules'), undefined, 2);
-                    $.ajax({
-                        url: '/search.php',
-                        method: 'POST',
-                        data: {
-                            'q': jsonQuery
-                        },
-                        success: function (data, textStatus, jqXHR) {
-                            $('#result').removeClass('hide').find('pre').html(data);
-                        }
-                    });
+                    $('#submit').find('input[name=q]').val(jsonQuery);
+                    $('#submit').submit();
                 });
 
             })(jQuery);
