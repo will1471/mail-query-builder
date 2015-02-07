@@ -246,9 +246,9 @@ function escape_phrase($input)
  */
 function format_datetime($string)
 {
-    $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $string, new \DateTimeZone('UTC'));
+    $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $string . ' 00:00:00', new \DateTimeZone('UTC'));
     if (! $datetime) {
-        throw new Exception('Failed to parse datetime: ' . $rule['value']);
+        throw new Exception('Failed to parse datetime: ' . $string);
     }
     return $datetime->format('Y-m-d\TH:i:s\Z');
 }

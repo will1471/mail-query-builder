@@ -47,6 +47,7 @@
         <script src="/js/jQuery.extendext.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/query-builder.js"></script>
+        <script src="/js/bootstrap-datepicker.js"></script>
 
         <script>
 
@@ -62,8 +63,19 @@
                         {
                             id: 'date',
                             label: 'Date',
-                            type: 'datetime',
-                            operators: ['less_or_equal', 'greater_or_equal', 'between']
+                            operators: ['less_or_equal', 'greater_or_equal', 'between'],
+                            type: 'date',
+                            validation: {
+                              format: 'YYYY-MM-DD'
+                            },
+                            plugin: 'datepicker',
+                            plugin_config: {
+                              format: 'yyyy-mm-dd',
+                              todayBtn: 'linked',
+                              todayHighlight: true,
+                              autoclose: true,
+                              orientation: 'top'
+                            }
                         },
                         {
                             id: 'subject',
