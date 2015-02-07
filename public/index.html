@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Mail Search</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/query-builder.css" rel="stylesheet">
+
+        <style>
+            body {
+                padding-top: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-10 col-lg-offset-1">
+
+                    <div id="builder"></div>
+
+                    <div class="btn-group pull-left">
+                        <button class="btn btn-default reset">Reset</button>
+                    </div>
+
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-primary search">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-10 col-lg-offset-1">
+                    <div id="result" class="hide">
+                        <h3>Results</h3>
+                        <pre></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/jquery-1.11.2.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/microevent.min.js"></script>
+        <script src="/js/jQuery.extendext.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/query-builder.js"></script>
+
+        <script>
+
+            (function ($) {
+
+                $('#builder').queryBuilder({
+                    allow_empty: false,
+                    allow_groups: 1,
+                    onValidationError: function ($target, err) {
+                        console.error(err, $target);
+                    },
+                    filters: [
+                        {
+                            id: 'date',
+                            label: 'Date',
+                            type: 'datetime',
+                            operators: ['less_or_equal', 'greater_or_equal', 'between']
+                        },
+                        {
+                            id: 'subject',
+                            label: 'Subject',
+                            type: 'string',
+                            operators: ['contains']
+                        },
+                        {
+                            id: 'body',
+                            label: 'Body',
+                            type: 'string',
+                            operators: ['contains']
+                        },
+                        {
+                            id: 'from',
+                            label: 'From Address',
+                            type: 'string',
+                            operators: ['equal', 'not_equal']
+                        },
+                        {
+                            id: 'to',
+                            label: 'To Address',
+                            type: 'string',
+                            operators: ['equal', 'not_equal']
+                        },
+                        {
+                            id: 'cc',
+                            label: 'CC Address',
+                            type: 'string',
+                            operators: ['equal', 'not_equal']
+                        },
+                        {
+                            id: 'from_names',
+                            label: 'From Name',
+                            type: 'string',
+                            operators: ['contains']
+                        },
+                        {
+                            id: 'to_names',
+                            label: 'To Name',
+                            type: 'string',
+                            operators: ['contains']
+                        },
+                        {
+                            id: 'cc_names',
+                            label: 'CC Name',
+                            type: 'string',
+                            operators: ['contains']
+                        },
+                        {
+                            id: 'involves-address',
+                            label: 'Involves Address',
+                            type: 'string',
+                            operators: ['equal']
+                        },
+                        {
+                            id: 'involves-name',
+                            label: 'Involves Name',
+                            type: 'string',
+                            operators: ['equal']
+                        }
+                    ]
+                });
+
+                $('.reset').on('click', function () {
+                    $('#builder').queryBuilder('reset');
+                    $('#result').addClass('hide').find('pre').empty();
+                });
+
+                $('.search').on('click', function () {
+                    var jsonQuery = JSON.stringify($('#builder').queryBuilder('getRules'), undefined, 2);
+                    $.ajax({
+                        url: '/search.php',
+                        data: {
+                            'q': jsonQuery
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            $('#result').removeClass('hide').find('pre').html(data);
+                        }
+                    });
+                });
+
+            })(jQuery);
+        </script>
+    </body>
+</html>
