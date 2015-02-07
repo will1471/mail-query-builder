@@ -137,6 +137,7 @@
                     var jsonQuery = JSON.stringify($('#builder').queryBuilder('getRules'), undefined, 2);
                     $.ajax({
                         url: '/search.php',
+                        method: 'POST',
                         data: {
                             'q': jsonQuery
                         },

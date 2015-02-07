@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$query = json_decode($_GET['q'], true);
+$query = json_decode($_POST['q'], true);
 
 try {
 
